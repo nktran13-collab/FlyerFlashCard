@@ -54,3 +54,35 @@ small{color:var(--muted);font-size:1rem}
   .wrap{max-width:1000px}
   .card{height:400px}
 }
+
+/* Compact header + topic picker */
+h1{font-size:1.5rem;margin:6px 0 8px;padding:0 48px}
+.topic-btn{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;background:var(--card);color:var(--text);border:3px solid var(--border);box-shadow:0 3px 0 var(--opt-sh);border-radius:18px;padding:8px 14px;text-align:left}
+.topic-btn .tb-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topic-btn .tb-meta{white-space:nowrap;color:var(--muted);font-weight:700}
+.modes{margin:10px 0 0}
+.modes #shuf{padding:8px 16px}
+.card{margin:12px 0}
+.sheet[hidden]{display:none}
+.sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet-backdrop{position:absolute;inset:0;background:#0007}
+.sheet-panel{position:relative;width:100%;max-width:860px;max-height:85vh;display:flex;flex-direction:column;background:var(--bg2);color:var(--text);border-radius:26px 26px 0 0;box-shadow:0 -6px 24px var(--shadow);animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;font-size:1.3rem}
+.sheet-head button{padding:4px 12px;background:var(--card);color:var(--text);box-shadow:0 2px 0 var(--opt-sh)}
+.sheet-body{overflow-y:auto;padding:0 14px 20px;-webkit-overflow-scrolling:touch}
+.sheet-group{text-align:left;font-weight:800;margin:12px 4px 6px;color:var(--title)}
+.sheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tcard{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:left;background:var(--card);color:var(--text);box-shadow:0 3px 0 var(--opt-sh);border:3px solid transparent;border-radius:16px;padding:10px 12px;font-size:1rem}
+.tcard.on{border-color:#2e86de}
+.tcard.done .tc-n::after{content:" ✅"}
+.tc-bar{display:block;width:100%;height:6px;background:#8883;border-radius:3px;overflow:hidden}
+.tc-bar i{display:block;height:100%;background:#10ac84}
+@media (min-width:700px){
+  h1{font-size:2rem}
+  .sheet{align-items:center}
+  .sheet-panel{border-radius:26px;max-height:80vh}
+  .sheet-grid{grid-template-columns:repeat(3,1fr)}
+  .topic-btn{font-size:1.4rem;padding:10px 20px}
+  .tcard{font-size:1.2rem}
+}

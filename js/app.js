@@ -1,10 +1,27 @@
-let topic=Object.keys(DATA)[0],mode="flash",deck=[],i=0,known=JSON.parse(localStorage.flyerKnown||"{}");
+let topic=DATA[localStorage.flyerTopic]?localStorage.flyerTopic:Object.keys(DATA).find(t=>t.startsWith("Flyers "))||Object.keys(DATA)[0],mode="flash",deck=[],i=0,known=JSON.parse(localStorage.flyerKnown||"{}");
 const $=id=>document.getElementById(id);
 function say(t){if(!speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=.8;speechSynthesis.speak(u)}
 function save(){localStorage.flyerKnown=JSON.stringify(known)}
 function load(shuffle){deck=[...DATA[topic]];if(shuffle)deck.sort(()=>Math.random()-.5);i=0;render()}
-function renderTopics(){$("topics").innerHTML="";Object.keys(DATA).forEach(t=>{const b=document.createElement("button");const n=DATA[t].filter(w=>known[w[1]]).length;b.textContent=t+" "+n+"/"+DATA[t].length;if(t==topic)b.className="on";b.onclick=()=>{topic=t;renderTopics();load()};$("topics").appendChild(b)})}
-function render(){const n=DATA[topic].filter(w=>known[w[1]]).length;$("bar").style.width=n/DATA[topic].length*100+"%";$("stat").firstChild.textContent="Đã thuộc "+n+"/"+DATA[topic].length;mode=="flash"?flash():quiz()}
+const GROUPS=[["📝 Chủ đề thi Flyers",t=>t.startsWith("Flyers ")],["🌟 Chủ đề cơ bản",t=>!t.startsWith("Flyers ")]];
+function cnt(t){return DATA[t].filter(w=>known[w[1]]).length}
+function renderTopics(){
+ $("tbName").textContent=topic;$("tbCount").textContent=cnt(topic)+"/"+DATA[topic].length;
+ const body=$("sheetBody");body.innerHTML="";
+ GROUPS.forEach(([title,test])=>{const ts=Object.keys(DATA).filter(test);if(!ts.length)return;
+  const h=document.createElement("div");h.className="sheet-group";h.textContent=title;body.appendChild(h);
+  const grid=document.createElement("div");grid.className="sheet-grid";
+  ts.forEach(t=>{const b=document.createElement("button");const n=cnt(t),all=DATA[t].length;
+   b.className="tcard"+(t==topic?" on":"")+(n==all?" done":"");
+   b.innerHTML=`<span class="tc-name"></span><span class="tc-bar"><i style="width:${n/all*100}%"></i></span><small class="tc-n">${n}/${all}</small>`;
+   b.querySelector(".tc-name").textContent=t;
+   b.onclick=()=>{topic=t;localStorage.flyerTopic=t;closeSheet();renderTopics();load()};grid.appendChild(b)});
+  body.appendChild(grid)})}
+function openSheet(){$("sheet").hidden=false;document.body.style.overflow="hidden";const on=document.querySelector(".tcard.on");if(on)on.scrollIntoView({block:"center"})}
+function closeSheet(){$("sheet").hidden=true;document.body.style.overflow=""}
+$("topicBtn").onclick=openSheet;$("sheetClose").onclick=closeSheet;$("sheetBg").onclick=closeSheet;
+document.addEventListener("keydown",e=>{if(e.key=="Escape")closeSheet()});
+function render(){const n=cnt(topic);$("bar").style.width=n/DATA[topic].length*100+"%";mode=="flash"?flash():quiz()}
 function flash(){const w=deck[i];$("main").innerHTML=`<div class="card" id="c"><div class="in"><div class="f"><div class="emoji">${w[0]||"&#128214;"}</div><div class="word">${w[1]}</div><small>Chạm để lật</small></div><div class="b"><div class="vi">${w[2]}</div><div class="word">${w[1]}</div></div></div></div>
 <div class="row"><button id="sp">🔊 Nghe</button></div>
 <div class="row"><button class="r" id="no">😅 Chưa thuộc</button><button class="g" id="yes">😄 Đã thuộc</button></div>

@@ -14,16 +14,25 @@
 <div class="wrap">
 <button id="theme" aria-label="Toggle theme">&#127769;</button>
 <h1>🚀 Flyer Flashcards</h1>
-<small>Ôn từ vựng Cambridge Flyers (A2)</small>
-<div class="topics" id="topics"></div>
-<div class="row">
+<button id="topicBtn" class="topic-btn" aria-haspopup="dialog">
+ <span class="tb-label">📚 <b id="tbName"></b></span>
+ <span class="tb-meta"><span id="tbCount"></span> ▾</span>
+</button>
+<div class="bar"><div id="bar"></div></div>
+<div class="row modes">
  <button id="mFlash" class="on">🃏 Thẻ</button>
  <button id="mQuiz">🎯 Trắc nghiệm</button>
- <button id="shuf">🔀 Trộn</button>
+ <button id="shuf" aria-label="Trộn thẻ">🔀</button>
 </div>
-<div class="bar"><div id="bar"></div></div>
-<div id="stat"><small></small></div>
 <div id="main"></div>
+</div>
+
+<div id="sheet" class="sheet" hidden>
+ <div class="sheet-backdrop" id="sheetBg"></div>
+ <div class="sheet-panel" role="dialog" aria-label="Chọn chủ đề">
+  <div class="sheet-head"><b>Chọn chủ đề</b><button id="sheetClose" aria-label="Đóng">✕</button></div>
+  <div id="sheetBody" class="sheet-body"></div>
+ </div>
 </div>
 <script src="js/data.js"></script>
 <script src="js/data-flyers.js"></script>
